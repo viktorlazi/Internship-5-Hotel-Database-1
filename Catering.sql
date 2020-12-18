@@ -7,18 +7,19 @@ HotelLocation nvarchar(100) NOT NULL
 
 create table Workers(
 Id int IDENTITY(1,1) PRIMARY KEY,
+HotelId int FOREIGN KEY REFERENCES Hotels(Id) NOT NULL,
 WorkerType nvarchar(20) NOT NULL CHECK(WorkerType = 'Janitor' OR WorkerType = 'Recepcionist' OR WorkerType = 'Room service'),
 FirstName nvarchar(20) NOT NULL,
 LastName nvarchar(20) NOT NULL,
 Salary int NOT NULL,
-Age int NOT NULL,
-HotelId int FOREIGN KEY REFERENCES Hotels(Id) NOT NULL
+Age int NOT NULL
 )
 
 create table Rooms(
 Id int IDENTITY(1,1) PRIMARY KEY,
 HotelId int FOREIGN KEY REFERENCES Hotels(Id) NOT NULL,
-NumberOfBeds int NOT NULL
+NumberOfBeds int NOT NULL,
+RoomNumber int NOT NULL
 )
 
 create table Buyers(
@@ -32,10 +33,11 @@ OIB nvarchar(30) NOT NULL
 create table Stays(
 Id int IDENTITY(1,1) PRIMARY KEY,
 TimeOfStay DateTime2 NOT NULL,
+TimeOfDepart DateTime2,
 TypeOfStay nvarchar(50) CHECK(TypeOfStay = 'Pansion' OR TypeOfStay = 'Half pansion' OR TypeOfStay = 'Regular') NOT NULL,
 Price int NOT NULL,
-RoomsId int FOREIGN KEY REFERENCES Rooms(Id) NOT NULL,
-BuyersId int FOREIGN KEY REFERENCES Buyers(Id) NOT NULL
+RoomId int FOREIGN KEY REFERENCES Rooms(Id) NOT NULL,
+BuyerId int FOREIGN KEY REFERENCES Buyers(Id) NOT NULL
 )
 
 create table Visitors(
@@ -71,12 +73,15 @@ insert into Workers (WorkerType,FirstName,LastName,Salary,Age,HotelId) VALUES
 
 --
 
-insert into Rooms (NumberOfBeds,HotelId) VALUES
-(4,1),
-(2,3),
-(3,5),
-(1,4),
-(1,2)
+insert into Rooms (NumberOfBeds,HotelId,RoomNumber) VALUES
+(2,1,3),
+(1,1,45),
+(2,1,176),
+(4,1,623),
+(2,3,123),
+(3,5,423),
+(1,4,323),
+(1,2,223)
 
 --
 
@@ -89,12 +94,15 @@ insert into Buyers (FirstName,LastName,PhoneNumber,OIB) VALUES
 
 --
 
-insert into Stays (TimeOfStay,TypeOfStay,Price,RoomsId,BuyersId) VALUES
-(GETDATE(),'Pansion',6000,1,5),
-(GETDATE(),'Half pansion',2000,3,4),
-(GETDATE(),'Pansion',5000,2,3),
-(GETDATE(),'Regular',1000,5,2),
-(GETDATE(),'Regular',800,4,1)
+insert into Stays (TimeOfStay,TimeOfDepart,TypeOfStay,Price,RoomId,BuyerId) VALUES
+('2020-5-1',NULL,'Pansion',4000,1,5),
+('2020-5-5',NULL,'Half pansion',2000,1,5),
+('2020-5-3',NULL,'Pansion',1400,1,5),
+(GETDATE(),NULL,'Pansion',6000,1,5),
+(GETDATE(),NULL,'Half pansion',2000,3,4),
+(GETDATE(),NULL,'Pansion',5000,2,3),
+(GETDATE(),NULL,'Regular',1000,5,2),
+('2019-12-3','2020-12-1','Regular',800,4,1)
 
 --
 
@@ -114,5 +122,46 @@ insert into VisitorStays (VisitorId,StayId) VALUES
 (4,3),
 (1,1)
 
+--Select all rooms from a hotel with a certain name
+
+
+
 --
 
+select * from Rooms where RoomNumber LIKE '1%'
+
+--
+
+select FirstName,LastName from Workers where WorkerType = 'Janitor'
+
+--
+
+select * from Stays where Price >= 1000 AND TimeOfStay >= '2020-12-1'
+
+--
+
+select * from Stays where TimeOfDepart IS NULL
+
+--Delete every stay before 2020-1-1
+
+delete from VisitorStays where 
+delete from Stays where TimeOfStay <= '2020-1-1'
+
+--
+
+update Rooms SET NumberOfBeds = 4 WHERE NumberOfBeds = 3 AND HotelId = 2
+
+--
+
+select * from Stays where RoomsId = 1 ORDER BY TimeOfStay Asc
+
+--all stays in a certain hotel
+
+select * from Stays
+where (TypeOfStay = 'Pansion' OR TypeOfStay = 'Half pansion')
+AND 
+
+--
+
+select * from Workers
+update Workers SET WorkerType = 'Recepcionist' WHERE Id = 4 OR Id = 2
