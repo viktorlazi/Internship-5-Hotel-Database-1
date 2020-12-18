@@ -122,9 +122,10 @@ insert into VisitorStays (VisitorId,StayId) VALUES
 (4,3),
 (1,1)
 
---Select all rooms from a hotel with a certain name
+--
 
-
+select * from Rooms
+WHERE HotelId IN (SELECT Id FROM Hotels Where HotelName ='Plaza')
 
 --
 
@@ -142,9 +143,8 @@ select * from Stays where Price >= 1000 AND TimeOfStay >= '2020-12-1'
 
 select * from Stays where TimeOfDepart IS NULL
 
---Delete every stay before 2020-1-1
+--
 
-delete from VisitorStays where 
 delete from Stays where TimeOfStay <= '2020-1-1'
 
 --
@@ -153,13 +153,14 @@ update Rooms SET NumberOfBeds = 4 WHERE NumberOfBeds = 3 AND HotelId = 2
 
 --
 
-select * from Stays where RoomsId = 1 ORDER BY TimeOfStay Asc
+select * from Stays where RoomId = 1 ORDER BY TimeOfStay Asc
 
---all stays in a certain hotel
+--
 
 select * from Stays
 where (TypeOfStay = 'Pansion' OR TypeOfStay = 'Half pansion')
-AND 
+AND RoomId IN (SELECT Id FROM Rooms Where HotelId IN (SELECT Id FROM Hotels WHere HotelName = 'Plaza'))
+order by Price asc
 
 --
 
