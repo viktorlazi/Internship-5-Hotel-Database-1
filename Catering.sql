@@ -1,4 +1,8 @@
-﻿create table Hotels(
+﻿use Catering
+
+
+
+create table Hotels(
 Id int IDENTITY(1,1) PRIMARY KEY,
 HotelName nvarChar(100) NOT NULL,
 Rating int CHECK (Rating BETWEEN 1 AND 5) NOT NULL,
@@ -62,7 +66,7 @@ insert into Hotels (HotelName,Rating,HotelLocation) VALUES
 ('Hotel Name',1,'Rim'),
 ('Raddison',3,'London')
 
---
+
 
 insert into Workers (WorkerType,FirstName,LastName,Salary,Age,HotelId) VALUES
 ('Janitor','Mate','Matić',4000,29,1),
@@ -71,7 +75,7 @@ insert into Workers (WorkerType,FirstName,LastName,Salary,Age,HotelId) VALUES
 ('Room service','Teo','Teovski',5000,40,5),
 ('Janitor','Stipe','Stipić',5000,40,4)
 
---
+
 
 insert into Rooms (NumberOfBeds,HotelId,RoomNumber) VALUES
 (2,1,3),
@@ -83,7 +87,7 @@ insert into Rooms (NumberOfBeds,HotelId,RoomNumber) VALUES
 (1,4,323),
 (1,2,223)
 
---
+
 
 insert into Buyers (FirstName,LastName,PhoneNumber,OIB) VALUES
 ('Ivan','Ivić','30219830','312567321'),
@@ -92,7 +96,7 @@ insert into Buyers (FirstName,LastName,PhoneNumber,OIB) VALUES
 ('Marko','Markić','09814321','3121233321'),
 ('Šime','Šimić','09812342','31213321')
 
---
+
 
 insert into Stays (TimeOfStay,TimeOfDepart,TypeOfStay,Price,RoomId,BuyerId) VALUES
 ('2020-5-1',NULL,'Pansion',4000,1,5),
@@ -104,7 +108,7 @@ insert into Stays (TimeOfStay,TimeOfDepart,TypeOfStay,Price,RoomId,BuyerId) VALU
 (GETDATE(),NULL,'Regular',1000,5,2),
 ('2019-12-3','2020-12-1','Regular',800,4,1)
 
---
+
 
 insert into Visitors (FirstName,LastName,PhoneNumber) VALUES
 ('Nika','Nikić','4230089'),
@@ -113,7 +117,7 @@ insert into Visitors (FirstName,LastName,PhoneNumber) VALUES
 ('Roko','Rokić','8766854'),
 ('Vana','Vanić','35443533')
 
---
+
 
 insert into VisitorStays (VisitorId,StayId) VALUES
 (1,2),
