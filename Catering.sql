@@ -1,4 +1,6 @@
-﻿use Catering
+﻿create database Catering
+
+use Catering
 
 
 
